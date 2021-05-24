@@ -50,6 +50,6 @@ class MagicController extends Controller
         //     }
         //     $k++;
         // }
-        return $sells;
+        return $step1;
     }
 }
