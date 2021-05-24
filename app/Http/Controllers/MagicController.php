@@ -43,7 +43,7 @@ class MagicController extends Controller
             foreach ($step1 as $st1) {
                 if ($pair['quoteAsset'] == $symbol) {
                     $response = json_decode(file_get_contents('https://api.binance.cc/api/v3/aggTrades?symbol='.str_replace("_","",$pair['symbol']).'&limit=1'), true);
-
+                    usleep(500000);
                     $result = $st1[4]/$response[0]['p'];
                     $sells[$j] = array($st1[3], $st1[4], $pair['symbol'], $pair['baseAsset'], $response[0]['p'], $result);
                 }
