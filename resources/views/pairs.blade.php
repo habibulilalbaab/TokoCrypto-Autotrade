@@ -33,8 +33,6 @@
         <td>{{$pair['symbol']}}</td>
         <td>{{$pair['baseAsset']}}</td>
         <td>{{$pair['quoteAsset']}}</td>
-        <td>{{$response[0]['p'] ?? 0}}</td>
-        <td>{{$response[0]['q'] ?? 0}}</td>
     </tr>
     @endforeach
     @php

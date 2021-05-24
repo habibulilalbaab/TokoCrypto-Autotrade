@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PairsController;
+use App\Http\Controllers\MagicController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/pairs', [PairsController::class, 'index']);
+Route::get('/magic/{symbol}', [MagicController::class, 'index']);
