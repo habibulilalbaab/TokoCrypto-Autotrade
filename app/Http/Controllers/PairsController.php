@@ -7,16 +7,42 @@ use Illuminate\Support\Facades\Cache;
 
 class PairsController extends Controller
 {
-    public function index(){
-        if (Cache::has('pairs')) {
-            $pairs = Cache::get('pairs');
-        }else {    
-            $pairs = json_decode(file_get_contents('https://www.tokocrypto.com/open/v1/common/symbols'), true);
-            $pairs = $pairs['data']['list'];
-            Cache::put('pairs', $pairs);
+    public function API_Request($symbol){
+        $response = json_decode(file_get_contents('https://api.binance.cc/api/v3/aggTrades?symbol='.$symbol.'&limit=1'), true);
+        return $response[0]['p'];
+    }
+    public function Calculate($val, $symbol, $operation){
+        $result = $this->API_Request($symbol);
+        if ($operation == "/") {
+            return $val/$result;
+        }elseif ($operation == "*") {
+            return $val*$result;
         }
-        return view('pairs', compact(
-            'pairs'
-        ));
+    }
+    public function index(){
+        // BIDR
+        $data[0] = [
+            "symbol" => "BIDR-BNB-ETH-BIDR",
+            "A" => $init = 100000,
+            "B" => $bnb = $this->Calculate($init, "BNBBIDR", "/"),
+            "C" => $eth = $this->Calculate($bnb, "BNBETH", "*"),
+            "D" => $final = $this->Calculate($eth, "ETHBIDR", "*"),
+            "B_A" => $this->API_Request("BNBBIDR"),
+            "B_B" => $this->API_Request("BNBETH"),
+            "S_C" => $this->API_Request("ETHBIDR"),
+            "profit"=> ($final-$init)/100
+        ];
+        $data[1] = [
+            "symbol" => "BIDR-BTC-ETH-BIDR",
+            "A" => $init = 100000,
+            "B" => $btc = $this->Calculate($init, "BTCBIDR", "/"),
+            "C" => $eth = $this->Calculate($btc, "ETHBTC", "/"),
+            "D" => $final = $this->Calculate($eth, "ETHBIDR", "*"),
+            "B_A" => $this->API_Request("BTCBIDR"),
+            "B_B" => $this->API_Request("ETHBTC"),
+            "S_C" => $this->API_Request("ETHBIDR"),
+            "profit" => ($final-$init)/100
+        ];
+        return $data;
     }
 }
