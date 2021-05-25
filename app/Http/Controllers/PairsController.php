@@ -19,30 +19,33 @@ class PairsController extends Controller
             return $val*$result;
         }
     }
-    public function index(){
+    public function index($symbol){
         // BIDR
-        $data[0] = [
-            "symbol" => "BIDR-BNB-ETH-BIDR",
-            "A" => $init = 100000,
-            "B" => $bnb = $this->Calculate($init, "BNBBIDR", "/"),
-            "C" => $eth = $this->Calculate($bnb, "BNBETH", "*"),
-            "D" => $final = $this->Calculate($eth, "ETHBIDR", "*"),
-            "B_A" => $this->API_Request("BNBBIDR"),
-            "B_B" => $this->API_Request("BNBETH"),
-            "S_C" => $this->API_Request("ETHBIDR"),
-            "profit"=> ($final-$init)/100
-        ];
-        $data[1] = [
-            "symbol" => "BIDR-BTC-ETH-BIDR",
-            "A" => $init = 100000,
-            "B" => $btc = $this->Calculate($init, "BTCBIDR", "/"),
-            "C" => $eth = $this->Calculate($btc, "ETHBTC", "/"),
-            "D" => $final = $this->Calculate($eth, "ETHBIDR", "*"),
-            "B_A" => $this->API_Request("BTCBIDR"),
-            "B_B" => $this->API_Request("ETHBTC"),
-            "S_C" => $this->API_Request("ETHBIDR"),
-            "profit" => ($final-$init)/100
-        ];
-        return $data;
+        if ($symbol == "BIDR-BNB-ETH-BIDR") {    
+            return [
+                "symbol" => $symbol,
+                "A" => $init = 100000,
+                "B" => $bnb = $this->Calculate($init, "BNBBIDR", "/"),
+                "C" => $eth = $this->Calculate($bnb, "BNBETH", "*"),
+                "D" => $final = $this->Calculate($eth, "ETHBIDR", "*"),
+                "B_A" => $this->API_Request("BNBBIDR"),
+                "B_B" => $this->API_Request("BNBETH"),
+                "S_C" => $this->API_Request("ETHBIDR"),
+                "profit"=> ($final-$init)/100
+            ];
+        }
+        if ($symbol == "BIDR-BTC-ETH-BIDR") {
+            return [
+                "symbol" => $symbol,
+                "A" => $init = 100000,
+                "B" => $btc = $this->Calculate($init, "BTCBIDR", "/"),
+                "C" => $eth = $this->Calculate($btc, "ETHBTC", "/"),
+                "D" => $final = $this->Calculate($eth, "ETHBIDR", "*"),
+                "B_A" => $this->API_Request("BTCBIDR"),
+                "B_B" => $this->API_Request("ETHBTC"),
+                "S_C" => $this->API_Request("ETHBIDR"),
+                "profit" => ($final-$init)/100
+            ];
+        }
     }
 }

@@ -18,5 +18,13 @@ use App\Http\Controllers\MagicController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/', [PairsController::class, 'index']);
+Route::get('/', function (
+    $data = array(
+        "BIDR-BNB-ETH-BIDR",
+        "BIDR-BTC-ETH-BIDR"
+    )
+) {
+    return $data;
+});
+Route::get('/{symbol}', [PairsController::class, 'index']);
 Route::get('/magic/{symbol}', [MagicController::class, 'index']);
